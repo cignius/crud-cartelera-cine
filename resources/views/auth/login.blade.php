@@ -214,7 +214,7 @@
                             <div class="form-group">
                                 {!! Captcha::img() !!}
                                 <input type="text" id="captcha" class="form-control mt-2" name="captcha"
-                                    placeholder="Escriba la palabra del captcha">
+                                    placeholder="Escriba el captcha">
                             </div>
                             <div class="form-group text-end">
                                 <button class="btn btn-primary btn-block" type="submit">Iniciar sesión</button>

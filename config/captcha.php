@@ -8,9 +8,9 @@ return [
         'width' => 250,
         'height' => 36,
         'quality' => 90,
-        'math' => true,
+        'math' => false,
         'expire' => 60,
-        'encrypt' => true,
+        'encrypt' => false,
     ],
     'math' => [
         'length' => 9,
