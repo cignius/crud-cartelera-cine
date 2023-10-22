@@ -17,11 +17,12 @@ class CreateMoviesTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('director');
-            $table->string('duration', 5);
-            $table->string('classification',10);
+            $table->string('duration', 10);
+            $table->string('classification',5);
+            $table->string('image');
             $table->timestamp('start_exhibition')->nullable();
             $table->timestamp('finish_exhibition')->nullable();
-            $table->string('status', 20);
+            $table->string('status', 20)->nullable();
             $table->timestamps();
         });
     }
