@@ -1,9 +1,6 @@
-@import url(../fonts/stylesheet-bogle.css);
 body {
   font-family: 'Bogle', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   background: white;
-  background-image: url(../images/bg_dinamica.png);
-  background-size: 100% 100%;
 }
 /*
 
@@ -302,30 +299,6 @@ img.border-recipe {
 .btn-access-login {
   background-color: #ff6c10 !important;
   border: none;
-}
-@font-face {
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 300;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmSU5fBBc9.ttf) format('truetype');
-}
-@font-face {
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxP.ttf) format('truetype');
-}
-@font-face {
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmWUlfBBc9.ttf) format('truetype');
-}
-body {
-  background: #ffffff;
 }
 @media only screen and (max-width: 767px) {
   .hide-on-mobile {
