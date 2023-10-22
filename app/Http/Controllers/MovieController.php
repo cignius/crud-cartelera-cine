@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Storage;
 
 class MovieController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth'); 
+    }
     /**
      * Display a listing of the resource.
      *
@@ -67,7 +71,7 @@ class MovieController extends Controller
      */
     public function show(Movie $movie)
     {
-        //
+        
     }
 
     /**
@@ -107,14 +111,21 @@ class MovieController extends Controller
     private function storeImage($request, $movie)
     {
         try {
-
+            //get extension
             $imageExtension = $request->image->extension();
-            $image = substr(sha1(time()), 0, 50) . $imageExtension;
-
-
+            //random value
+            $randomvalue = substr(sha1(time()), 0, 50);
+            //rename image
+            $image = "{$randomvalue}.{$imageExtension}";
+            //storage
             $disk = Storage::disk('movies');
             $disk->putFileAs($movie->token, $request->image, $image);
+
+            //update value
+            $movie->update(['image' => $image]);
+
             session(['status' => 'Registro creado con éxito']);
+
             return response()->json([
                 "type" => 'success',
                 "message" => 'Registro exitoso',
