@@ -23,6 +23,7 @@ class CreateMoviesTable extends Migration
             $table->timestamp('start_exhibition')->nullable();
             $table->timestamp('finish_exhibition')->nullable();
             $table->string('status', 20)->nullable();
+            $table->string('token', 50);
             $table->timestamps();
         });
     }

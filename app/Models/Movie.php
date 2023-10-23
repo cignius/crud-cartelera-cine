@@ -14,6 +14,7 @@ class Movie extends Model
         'classification',
         'image',
         'start_exhibition',
-        'finish_exhibition'
+        'finish_exhibition',
+        'token'
     ];
 }
