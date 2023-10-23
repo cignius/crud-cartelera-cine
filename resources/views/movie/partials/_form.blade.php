@@ -57,13 +57,13 @@
     <div class="errors"></div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i>
-        Cancelar</button>
+    <button type="button" class="btn btn-light-primary edit-movie-modal" data-id=""><i class="fa-regular fa-pen-to-square"></i>
+        Editar</button>
     <button type="button" class="btn btn-light-danger delete-movie" data-bs-toggle="modal"
         data-bs-target="#deleteModal" data-id=""><i class="fa-solid fa-ban"></i>
         Eliminar</button>
     {{-- Dependiendo el caso Crear o Editar --}}
-    <button type="submit" class="btn btn-light-success register"><i class="fa-solid fa-check"></i>
+    <button type="submit" class="btn btn-light-success create-movie"><i class="fa-solid fa-check"></i>
         Crear</button>
 
 </div>
