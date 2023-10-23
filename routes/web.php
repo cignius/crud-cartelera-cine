@@ -14,7 +14,7 @@ use App\Http\Controllers\MovieController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::resource('peliculas', MovieController::class)->parameters(['peliculas' => 'movie']);;
+Route::resource('peliculas', MovieController::class)->parameters(['peliculas' => 'movie'])->except(['create', 'edit']);
 Route::post('/', [LoginController::class, 'login']);
 Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
