@@ -53,12 +53,14 @@
                                     <li>
                                         <a class="dropdown-item d-flex align-items-center gap-3" href="#"
                                             data-bs-toggle="modal" data-bs-target="#showModal"
-                                            data-url="{{ route('peliculas.show', $movie->id) }}">
+                                            data-url="{{ route('peliculas.show', $movie->id) }}"
+                                            data-id="{{ $movie->id }}">
                                             <i class="fa-regular fa-eye"></i>
                                             Ver</a>
                                     </li>
                                     <li><a class="dropdown-item d-flex align-items-center gap-3" href="#"
                                             data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                            data-url="{{ route('peliculas.destroy', $movie->id) }}"
                                             data-id="{{ $movie->id }}"><i class="fa-solid fa-ban"></i>
                                             Eliminar</a></li>
                                 </ul>
@@ -74,4 +76,5 @@
     </div>
     @include('movie.partials.create-modal')
     @include('movie.partials.show-modal')
+    @include('movie.partials.delete-modal')
 @endsection

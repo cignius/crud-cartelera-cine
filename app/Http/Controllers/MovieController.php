@@ -150,7 +150,11 @@ class MovieController extends Controller
      */
     public function destroy(Movie $movie)
     {
-        //
+        
+        $disk = Storage::disk('movies');
+        $disk->delete($movie->image);
+        $movie->delete();
+        return back()->with('status', 'Se ha eliminado la película');
     }
 
     private function storeImage($request, $movie)

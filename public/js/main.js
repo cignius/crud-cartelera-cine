@@ -1,20 +1,20 @@
+//Show modals
 $('#createModal').on('show.bs.modal', function (event) {
     var modal = $(this);
     modal.find('.modal-footer .edit-movie-modal').addClass('d-none');
-    modal.find('.modal-footer .delete-movie').addClass('d-none');
     modal.find('.details').html("");
     $("#duration").inputmask("9h 99m", {
         "placeholder": "0"
     });
-    
+
 });
 $('#showModal').on('show.bs.modal', function (event) {
     var modal = $(this);
-    modal.find('.modal-footer .delete-movie').removeClass('d-none');
     modal.find('.modal-footer .edit-movie-modal').prop('disabled', false);
     modal.find('.details').html("");
     var button = $(event.relatedTarget);
     var url = button.data('url');
+
     $.ajax({
         type: 'GET',
         url: url,
@@ -39,13 +39,31 @@ $('#showModal').on('show.bs.modal', function (event) {
         console.log(jqXHR.status)
     });
 });
+
+$('#deleteModal').on('show.bs.modal',function (event) {
+    var button = $(event.relatedTarget);
+    console.log(button);
+    var url = button.data('url');
+    var id = button.data('id');
+    var modal = $(this);
+    modal.find('.modal-body .info').html('¿Desea eliminar el registro <strong>' + id +
+        '</strong>?');
+    modal.find('.form-delete').attr('action', url);
+});
+
+//Hide modal
 $('#createModal, #showModal').on('hidden.bs.modal', function (e) {
     $('.form-register')[0].reset();
-})
-$(document).on('submit', '.form-register',function (e) {
+});
+$('#deleteModal').on('hidden.bs.modal', function (e) {
+    var modal = $(this);
+    modal.find('.modal-body .info').html("");
+    modal.find('.form-delete').attr('action', "");
+});
+$(document).on('submit', '.form-register', function (e) {
     e.preventDefault();
     var $form = $(this);
-    var action = $form.find('#put').val() ? 'update':'create';
+    var action = $form.find('#put').val() ? 'update' : 'create';
     console.log(action);
     var formData = new FormData($(this)[0]);
     var modal = $(this).parents('.modal');
@@ -71,19 +89,20 @@ $(document).on('submit', '.form-register',function (e) {
         }
     }).done(function (data) {
         if (data.type == "success") {
-            successHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert">';
-            successHtml += data.message;
-            successHtml += '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-            $form.find('.details').html(successHtml);
-            if(data.action === 'update'){
+            if (data.action === 'update') {
+                successHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert">';
+                successHtml += data.message;
+                successHtml += '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                $form.find('.details').html(successHtml);
                 $form.find('.form-control').prop("disabled", true);
                 $form.find('.create-movie').html("<i class='fa-solid fa-check'></i> Crear");
                 $form.find('.create-movie').addClass('d-none');
                 $form.find('.edit-movie-modal').prop('disabled', false);
-                $form.find('.delete-movie').removeClass('d-none');
                 $form.find('#urlImage').attr('href', data.extra);
                 $form.find('#image').val('');
                 modal.find('.badge-title-modal').remove();
+            } else {
+                window.location.reload();
             }
         } else {
             errorsHtml =
@@ -92,11 +111,10 @@ $(document).on('submit', '.form-register',function (e) {
             errorsHtml += '</ul></div>';
             $form.find('.details').html(errorsHtml);
             $form.find('.create-movie').prop('disabled', false);
-            if(action == 'update')
-            {
-               $form.find('.modal-footer .create-movie').html('<i class="fa-solid fa-rotate"></i> Actualizar')
-            }else{
-               $form.find('.modal-footer .create-movie').html('<i class="fa-solid fa-rotate"></i> Crear')
+            if (action === 'update') {
+                $form.find('.modal-footer .create-movie').html('<i class="fa-solid fa-rotate"></i> Actualizar')
+            } else {
+                $form.find('.modal-footer .create-movie').html("<i class='fa-solid fa-check'></i> Crear")
 
             }
         }
@@ -122,11 +140,10 @@ $(document).on('submit', '.form-register',function (e) {
         }
 
         $form.find('.create-movie').prop('disabled', false);
-        if(action == 'update')
-        {
-           $form.find('.modal-footer .create-movie').html('<i class="fa-solid fa-rotate"></i> Actualizar')
-        }else{
-           $form.find('.modal-footer .create-movie').html('<i class="fa-solid fa-rotate"></i> Crear')
+        if (action === 'update') {
+            $form.find('.modal-footer .create-movie').html('<i class="fa-solid fa-rotate"></i> Actualizar')
+        } else {
+            $form.find('.modal-footer .create-movie').html('<i class="fa-solid fa-check"></i> Crear')
 
         }
     });
@@ -134,7 +151,7 @@ $(document).on('submit', '.form-register',function (e) {
 
 //Action EDIT
 $('.edit-movie-modal').on('click', function (event) {
-    $(this).prop('disabled', true);   
+    $(this).prop('disabled', true);
     var modal = $(this).parents('.modal');
     modal.find('form .form-control').prop("disabled", false);
     var title = modal.find('.modal-title').text();
@@ -144,9 +161,8 @@ $('.edit-movie-modal').on('click', function (event) {
         name: '_method',
         value: 'PUT',
         id: 'put'
-    }).appendTo( modal.find('form'));
+    }).appendTo(modal.find('form'));
     modal.find('.modal-footer .create-movie').html('<i class="fa-solid fa-rotate"></i> Actualizar')
     modal.find('.modal-footer .create-movie').removeClass('d-none');
-    modal.find('.modal-footer .delete-movie').addClass('d-none');
     modal.find('.details').html("");
 });
