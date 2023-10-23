@@ -49,7 +49,7 @@
         </div>
     </div>
     <div class="mb-3">
-        <label for="image" class="form-label">*Imagen:</label>
+        <label for="image" class="form-label">*Imagen: <a id="urlImage" target="_blank"></a> </label>
         <input class="form-control" type="file" id="image" name="image"
             accept="image/png, image/gif, image/jpeg, image/jpg">
     </div>

@@ -38,16 +38,17 @@
                                     <i class="fa-solid fa-ellipsis-vertical"></i>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item d-flex align-items-center gap-3" href="#"
-                                            data-bs-toggle="modal" data-bs-target="#infoModal" data-id="{{ $movie->id }}"
-                                            data-ticket="{{ $movie->ticket }}"
-                                            data-participant="{{ $movie->participant_id }}"
-                                            data-token="{{ $movie->token }}"><i class="fa-solid fa-check"></i>
-                                            Validar</a></li>
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center gap-3" href="#"
+                                            data-bs-toggle="modal" data-bs-target="#showModal"
+                                            data-url="{{ route('peliculas.show', $movie->id ) }}">
+                                            <i class="fa-regular fa-eye"></i>
+                                            Ver</a>
+                                    </li>
                                     <li><a class="dropdown-item d-flex align-items-center gap-3" href="#"
                                             data-bs-toggle="modal" data-bs-target="#deleteModal"
                                             data-id="{{ $movie->id }}"><i class="fa-solid fa-ban"></i>
-                                            Rechazar</a></li>
+                                            Eliminar</a></li>
                                 </ul>
                             </div>
                         </td>
@@ -60,6 +61,7 @@
             ])->links() }}
     </div>
     @include('movie.partials.create-modal')
+    @include('movie.partials.show-modal')
     <script>
         window.onload = function() {
 
@@ -70,7 +72,33 @@
                 });
                 modal.find('.modal-footer .delete-movie').addClass('d-none');
             });
-            $('#createModal').on('hidden.bs.modal', function(e) {
+            $('#showModal').on('show.bs.modal', function(event) {
+                var modal = $(this);
+                var button = $(event.relatedTarget);
+                var url = button.data('url');
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    dataType: 'json',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    
+                }).done(function(data) {
+                    console.log(data);
+                    modal.find('.modal-body #title').val(data.title).attr('disabled', true);
+                    modal.find('.modal-body #director').val(data.director).attr('disabled', true);
+                    modal.find('.modal-body #duration').val(data.duration).attr('disabled', true);
+                    modal.find('.modal-body #classification').val(data.classification).attr('disabled', true);
+                    modal.find('.modal-body #start_exhibition').val(data.start_exhibition.split(' ')[0]).attr('disabled', true);
+                    modal.find('.modal-body #finish_exhibition').val(data.finish_exhibition.split(' ')[0]).attr('disabled', true);
+                    modal.find('.modal-body #image').attr('disabled', true);
+                    modal.find('.modal-body #urlImage').attr('href', data.image).text('Clic para ver imagen');
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR.status)
+                });
+            });
+            $('#createModal, #showModal').on('hidden.bs.modal', function(e) {
                 $('.form-register')[0].reset();
             })
             $('.form-register').on('submit', function(e) {

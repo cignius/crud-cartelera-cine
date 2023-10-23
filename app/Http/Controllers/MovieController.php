@@ -71,7 +71,16 @@ class MovieController extends Controller
      */
     public function show(Movie $movie)
     {
-        
+        return response()->json([
+            'title' => $movie->title,
+            'director' => $movie->director,
+            'duration' => $movie->duration,
+            'classification' => $movie->classification,
+            'image' => url("movies/{$movie->image}"),
+            'start_exhibition' => $movie->start_exhibition,
+            'finish_exhibition' => $movie->finish_exhibition,
+            'status' => $movie->status
+        ]);
     }
 
     /**
