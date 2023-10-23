@@ -126,7 +126,7 @@ Colores y variables que se pueden cambiar
 }
 .btn-light-primary {
   background-color: #ecf2ff;
-  color: #5d87ff !important;
+  color: #5f85ec !important;
 }
 .btn-light-warning {
   background-color: #fef5e5;
@@ -134,11 +134,11 @@ Colores y variables que se pueden cambiar
 }
 .btn-light-danger {
   background-color: #fbf2ef;
-  color: #fa896b;
+  color: #fa896b !important;
 }
 .btn-light-success {
   background-color: #e6fffa;
-  color: #13deb9 !important;
+  color: #13be9f !important;
 }
 .btn-light-secondary {
   background-color: #eaeff4;
