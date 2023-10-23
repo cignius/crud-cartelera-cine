@@ -1,10 +1,12 @@
-# CRUD Cartelera :tw-1f3a5:
+# CRUD Cartelera
 
-## Tabla de contenidos 💪🚀
+## Tabla de contenidos
 
-- Requerimientos
-- Configuracion
-- Instalación
+- [Requerimientos](https://github.com/cignius/crud-cartelera-cine/edit/main/README.md#requerimientos- "- Requerimientos")
+- [Configuracion](https://github.com/cignius/crud-cartelera-cine/edit/main/README.md#instalaci%C3%B3n- "- Configuracion")
+- [Instalación](https://github.com/cignius/crud-cartelera-cine/edit/main/README.md#extras- "- Instalación")
+- [Extras](https://github.com/cignius/crud-cartelera-cine/edit/main/README.md#extras- "Extras")
+- [Api](https://github.com/cignius/crud-cartelera-cine/edit/main/README.md#api "- Api")
 
 ### Requerimientos 📋
 
@@ -16,45 +18,49 @@
 ### Instalación 🔧
 
 1. Copía el proyecto git a tu servidor
-  ```
-  git clone  https://github.com/cignius/crud-cartelera-cine.git 
-    ```
+```
+git clone  https://github.com/cignius/crud-cartelera-cine.git 
+```
 2. Dentro del proyecto, instala composer
-    ```
-    composer install
-    ```
-3. Crea el archivo `.env`  a partir del archiv `.env.example` Ajusta los parametros necesarios en el archivo:  **APP_URL **,  **APP_NAME **, ** DB_DATABASE **, **DB_USERNAME **, **DB_PASSWORD**
-
+```
+composer install
+```
+3. Crea el archivo `.env`  a partir del archiv `.env.example` Ajusta los parametros necesarios en el archivo:  **APP_URL ** ,  **APP_NAME ** , ** DB_DATABASE ** , **DB_USERNAME ** ,  **DB_PASSWORD**
 4. Dentro del proyecto, ejecutar el siguiente comando para generar el **APP_KEY**
- ```
-    php artisan key:generate
-    ```
+ ```bash
+php artisan key:generate
+```
 5. Generar la base de datos, a través de las migraciones y seeders laravel, ejecutar el comando:
+```bash
+php artisan migrate --seed
 ```
-    php artisan migrate --seed
-``` 
-6. Asignación de permisos 
- 6.1 Para ubuntu (servidor)
- 	Con el usuario administrador, asignar los siguientes permisos a:
+6. Asignación de permisos
+
+   6.1 Para ubuntu (servidor)
+   Con el usuario administrador, asignar los siguientes permisos a:
     ```bash
-    sudo chown -R user.www-data storage
-	sudo chown -R user.www-data bootstrap/cache
+    	sudo chown -R user.www-data storage
+    	sudo chown -R user.www-data bootstrap/cache
     ```
-	Usuario normal
-	```bash
-	chmod -R 775 storage
-	chmod -R 775 bootstrap/cache
-	```
- 6.2 Para windows
- Automaticamente el proyecto estará funcionando
+    Usuario normal
+    ```bash
+    chmod -R 775 storage
+    chmod -R 775 bootstrap/cache
+    ```
+
+    6.2 Para windows
+Automaticamente el proyecto estará funcionando
+
 7. Creación de la carpeta movies para el almacenamiento de imagenes
- 7.1 Usuarios ubuntu (dentro de la carpeta public)
+
+   7.1 Usuarios ubuntu (dentro de la carpeta public)
  	```bash
-mkdir tickets
-chmod -R 777 movies
-```
-7.2 Usuarios Windows
-Crea la carpeta movies dentro de public
+       mkdir tickets
+       chmod -R 777 movies
+    ```
+
+    7.2 Usuarios Windows
+    Crea la carpeta movies dentro de public
 
 8. Configuración de la carpeta public
 Para ambos SO, apunta la visibilidad hacia la carpeta public. 
