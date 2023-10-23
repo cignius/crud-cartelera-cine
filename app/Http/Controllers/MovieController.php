@@ -28,16 +28,6 @@ class MovieController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -45,6 +35,18 @@ class MovieController extends Controller
      */
     public function store(StoreMovie $request)
     {
+        $lastestMovie = Movie::latest()->first();
+        if ($lastestMovie) {
+            // Diff betwn lastest
+            $currentTime = now();
+            $timeDifference =  $lastestMovie->created_at->diffInMinutes($currentTime);
+            if ($timeDifference < 5) {
+                return response()->json([
+                    "type" => 'error',
+                    "message" => 'Debes esperar al menos 5 minutos antes de registrar una nueva película',
+                ], 500);
+            }
+        }
         $validated = $request->validated();
         $token = substr(sha1(time()), 0, 40);
         $validated['token'] = $token;
@@ -54,14 +56,6 @@ class MovieController extends Controller
         $validated['finish_exhibition'] = date("Y:m:d H:i:s", strtotime('+23 hours', strtotime('+59 minutes', strtotime('+59 seconds', strtotime($validated['finish_exhibition'])))));
         $validated['status'] = $this->checkStatus($validated['start_exhibition'], $validated['finish_exhibition']);
 
-        /*$info = [
-            'start' => $validated['start_exhibition'],
-            'finish' => $validated['finish_exhibition'],
-            'status' => $validated['status'],
-            'now' => new \DateTime()
-        ];
-        dd($info);
-        */
         try {
             $newMovie = Movie::create($validated);
         } catch (\Exception $e) {
@@ -94,17 +88,6 @@ class MovieController extends Controller
             'status' => $movie->status,
             'token' => $movie->token
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Movie  $movie
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Movie $movie)
-    {
-        //
     }
 
     /**
@@ -146,7 +129,7 @@ class MovieController extends Controller
                 return $this->handleErrorAndRollback($e, $movie);
             }
         }
-        
+
         $movie->update($validated);
         //session(['status' => 'Registro creado con éxito']);
 
@@ -220,16 +203,15 @@ class MovieController extends Controller
     private function checkStatus($start_date, $finish_date)
     {
         $now = new \DateTime();
-        $status = "";
+        $start_date = new \DateTime($start_date);
+        $finish_date = new \DateTime($finish_date);
 
         if ($now < $start_date) {
-           $status = 'Preestreno';
+            return 'Preestreno';
         } elseif ($now >= $start_date && $now <= $finish_date) {
-           $status = 'En cartelera';
+            return 'En cartelera';
         } elseif ($now > $finish_date) {
-           $status = 'Fuera de cartelera';
+            return 'Fuera de cartelera';
         }
-
-        return $status;
     }
 }
