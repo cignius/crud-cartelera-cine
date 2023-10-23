@@ -40,7 +40,6 @@ class MovieSeeder extends Seeder
             $movie->finish_exhibition = $faker->dateTimeBetween($movie->start_exhibition, '+3 months');
 
             $now = new \DateTime();
-
             if ($now < $movie->start_exhibition) {
                 $movie->status = 'Preestreno';
             } elseif ($now >= $movie->start_exhibition && $now <= $movie->finish_exhibition) {
