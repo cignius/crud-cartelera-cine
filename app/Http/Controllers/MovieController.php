@@ -44,7 +44,7 @@ class MovieController extends Controller
     public function store(StoreMoviePost $request)
     {
         $validated = $request->validated();
-        $token = substr(sha1(time()), 0, 50);
+        $token = substr(sha1(time()), 0, 40);
         $validated['token'] = $token;
         //Format timestamp 
         $validated['start_exhibition'] = date("Y:m:d", strtotime($validated['start_exhibition']));
@@ -124,7 +124,7 @@ class MovieController extends Controller
             //get extension
             $imageExtension = $request->image->extension();
             //random value
-            $randomvalue = substr(sha1(time()), 0, 50);
+            $randomvalue = substr(sha1(time()), 0, 40);
             //rename image
             $image = "{$randomvalue}.{$imageExtension}";
             //storage
