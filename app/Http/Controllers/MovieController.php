@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreMoviePost;
+use App\Http\Requests\StoreMovie;
+use App\Http\Requests\UpdateMovie;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -12,7 +13,7 @@ class MovieController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth'); 
+        $this->middleware('auth');
     }
     /**
      * Display a listing of the resource.
@@ -21,7 +22,7 @@ class MovieController extends Controller
      */
     public function index()
     {
-        $movies = Movie::orderBy('created_at', 'desc')->paginate(10);
+        $movies = Movie::orderBy('id', 'desc')->paginate(10);
         return view('movie.index', ['movies' => $movies]);
     }
 
@@ -41,7 +42,7 @@ class MovieController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreMoviePost $request)
+    public function store(StoreMovie $request)
     {
         $validated = $request->validated();
         $token = substr(sha1(time()), 0, 40);
@@ -102,9 +103,43 @@ class MovieController extends Controller
      * @param  \App\Models\Movie  $movie
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Movie $movie)
+    public function update(UpdateMovie $request, Movie $movie)
     {
-        //
+        $validated = $request->validated();
+        $disk = Storage::disk('movies');
+
+        if (isset($validated['image'])) {
+            if (isset($movie->image)) {
+                $disk->delete($movie->image);
+            }
+            try {
+                //get extension
+                $imageExtension = $request->image->extension();
+                //random value
+                $randomvalue = substr(sha1(time()), 0, 40);
+                //rename image
+                $image = "{$randomvalue}.{$imageExtension}";
+                //storage
+                $disk = Storage::disk('movies');
+                //use same path disk
+                $disk->putFileAs('', $request->image, $image);
+                //update value
+                $validated['image'] = $image;
+            } catch (\Exception $e) {
+                // Manejar el error y revertir si es necesario
+                return $this->handleErrorAndRollback($e, $movie);
+            }
+        }
+
+        $movie->update($validated);
+        //session(['status' => 'Registro creado con éxito']);
+
+        return response()->json([
+            "type" => 'success',
+            "message" => 'Actualización exitosa',
+            "extra" => url("movies/{$movie->image}"),
+            "action" => 'update'
+        ], 200);
     }
 
     /**
@@ -129,8 +164,8 @@ class MovieController extends Controller
             $image = "{$randomvalue}.{$imageExtension}";
             //storage
             $disk = Storage::disk('movies');
-            $disk->putFileAs($movie->token, $request->image, $image);
-
+            //use same path disk
+            $disk->putFileAs('', $request->image, $image);
             //update value
             $movie->update(['image' => $image]);
 
@@ -139,6 +174,8 @@ class MovieController extends Controller
             return response()->json([
                 "type" => 'success',
                 "message" => 'Registro exitoso',
+                "extra" => '',
+                "action" => 'create'
             ], 200);
         } catch (\Exception $e) {
             // Manejar el error y revertir si es necesario

@@ -6,7 +6,7 @@
                 <h5 class="modal-title w-100 text-center">Crear Película</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form>
+            <form action="" enctype="multipart/form-data" class="form-register">
                 @include('movie.partials._form')
             </form>
         </div>

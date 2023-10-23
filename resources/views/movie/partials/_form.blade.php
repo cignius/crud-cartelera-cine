@@ -21,10 +21,10 @@
         <div class="col-md-6">
             <div class="mb-3">
                 <label for="classification" class="form-label">*Clasificación:</label>
-                <select class="form-select" name="classification" id="classification" required>
+                <select class="form-select form-control" name="classification" id="classification" required>
                     <option hidden disabled>Elegir...</option>
                     <option value="aa">AA</option>
-                    <option value="A">A</option>
+                    <option value="a">A</option>
                     <option value="b">B</option>
                     <option value="b15">B15</option>
                     <option value="c">C</option>
@@ -54,9 +54,11 @@
             accept="image/png, image/gif, image/jpeg, image/jpg">
     </div>
 
-    <div class="errors"></div>
+    <div class="details"></div>
 </div>
 <div class="modal-footer">
+    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">Cancelar</button>
+
     <button type="button" class="btn btn-light-primary edit-movie-modal" data-id=""><i class="fa-regular fa-pen-to-square"></i>
         Editar</button>
     <button type="button" class="btn btn-light-danger delete-movie" data-bs-toggle="modal"

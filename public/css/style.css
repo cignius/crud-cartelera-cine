@@ -219,6 +219,12 @@ td {
   right: 20px;
   font-size: 2em;
 }
+.badge-title-modal {
+  opacity: 0.5;
+  float: left;
+  margin: 5px auto;
+  font-size: 10px;
+}
 .box-part-yellow {
   border: #008f21 solid thin !important;
   color: #008f21 !important;
