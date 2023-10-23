@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreMovie;
 use App\Http\Requests\UpdateMovie;
 use App\Models\Movie;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -48,9 +49,19 @@ class MovieController extends Controller
         $token = substr(sha1(time()), 0, 40);
         $validated['token'] = $token;
         //Format timestamp 
-        $validated['start_exhibition'] = date("Y:m:d", strtotime($validated['start_exhibition']));
+        $validated['start_exhibition'] = date("Y:m:d H:i:s", strtotime($validated['start_exhibition']));
         //Finish at date 59:59:59
         $validated['finish_exhibition'] = date("Y:m:d H:i:s", strtotime('+23 hours', strtotime('+59 minutes', strtotime('+59 seconds', strtotime($validated['finish_exhibition'])))));
+        $validated['status'] = $this->checkStatus($validated['start_exhibition'], $validated['finish_exhibition']);
+
+        /*$info = [
+            'start' => $validated['start_exhibition'],
+            'finish' => $validated['finish_exhibition'],
+            'status' => $validated['status'],
+            'now' => new \DateTime()
+        ];
+        dd($info);
+        */
         try {
             $newMovie = Movie::create($validated);
         } catch (\Exception $e) {
@@ -107,6 +118,11 @@ class MovieController extends Controller
     {
         $validated = $request->validated();
         $disk = Storage::disk('movies');
+        //Format timestamp 
+        $validated['start_exhibition'] = date("Y:m:d H:i:s", strtotime($validated['start_exhibition']));
+        //Finish at date 59:59:59
+        $validated['finish_exhibition'] = date("Y:m:d H:i:s", strtotime('+23 hours', strtotime('+59 minutes', strtotime('+59 seconds', strtotime($validated['finish_exhibition'])))));
+        $validated['status'] = $this->checkStatus($validated['start_exhibition'], $validated['finish_exhibition']);
 
         if (isset($validated['image'])) {
             if (isset($movie->image)) {
@@ -130,7 +146,7 @@ class MovieController extends Controller
                 return $this->handleErrorAndRollback($e, $movie);
             }
         }
-
+        
         $movie->update($validated);
         //session(['status' => 'Registro creado con éxito']);
 
@@ -150,7 +166,7 @@ class MovieController extends Controller
      */
     public function destroy(Movie $movie)
     {
-        
+
         $disk = Storage::disk('movies');
         $disk->delete($movie->image);
         $movie->delete();
@@ -199,5 +215,21 @@ class MovieController extends Controller
             "type" => 'error',
             "message" => 'Por el momento no podemos registrar la pelicula, intenta de nuevo más tarde',
         ], 500);
+    }
+
+    private function checkStatus($start_date, $finish_date)
+    {
+        $now = new \DateTime();
+        $status = "";
+
+        if ($now < $start_date) {
+           $status = 'Preestreno';
+        } elseif ($now >= $start_date && $now <= $finish_date) {
+           $status = 'En cartelera';
+        } elseif ($now > $finish_date) {
+           $status = 'Fuera de cartelera';
+        }
+
+        return $status;
     }
 }

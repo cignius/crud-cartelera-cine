@@ -38,7 +38,17 @@ class MovieSeeder extends Seeder
 
             $movie->start_exhibition = $faker->dateTimeBetween('-1 month', '+1 month');
             $movie->finish_exhibition = $faker->dateTimeBetween($movie->start_exhibition, '+3 months');
-            $movie->status = NULL;
+
+            $now = new \DateTime();
+
+            if ($now < $movie->start_exhibition) {
+                $movie->status = 'Preestreno';
+            } elseif ($now >= $movie->start_exhibition && $now <= $movie->finish_exhibition) {
+                $movie->status = 'En cartelera';
+            } elseif ($now > $movie->finish_exhibition) {
+                $movie->status = 'Fuera de Cartelera';
+            }
+
             $movie->token = $randomToken;
 
             // Generate an image with specific dimensions and random colors. Use intervention
