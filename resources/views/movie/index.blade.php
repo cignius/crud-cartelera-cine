@@ -1,6 +1,6 @@
 @extends('master', ['section' => 'index'])
 @section('content')
-    <div class="row">
+    <div class="row my-3">
         <div class="col-md-12 d-flex justify-content-end">
             <a class="btn btn-light-success" href="#" role="button" data-bs-toggle="modal" data-bs-target="#createModal">
                 <i class="fas fa-plus"></i> Nuevo registro
@@ -27,7 +27,17 @@
                     <tr>
                         <td class="text-center">{{ $movie->id }}</td>
                         <td class="text-center">{{ $movie->title }}</td>
-                        <td class="text-center">{{ $movie->status }}</td>
+                        <td class="text-center">
+                            <span
+                                class="badge py-2  d-inline-flex align-items-center gap-1 {{ is_null($movie->status) ? 'bg-light-warning text-warning' : 'bg-light-success text-success' }}">
+
+                                @if (is_null($movie->status))
+                                <i class="fa-solid fa-clock-rotate-left"></i> sin asignación
+                                @else
+                                    <i class="fa-solid fa-check"></i> {{ $movie->status }}
+                                @endif
+                            </span>
+                        </td>
                         <td class="text-center">{{ $movie->start_exhibition }}</td>
                         <td class="text-center">{{ $movie->finish_exhibition }}</td>
                         <td class="text-center">{{ $movie->created_at }}</td>
@@ -43,7 +53,7 @@
                                     <li>
                                         <a class="dropdown-item d-flex align-items-center gap-3" href="#"
                                             data-bs-toggle="modal" data-bs-target="#showModal"
-                                            data-url="{{ route('peliculas.show', $movie->id ) }}">
+                                            data-url="{{ route('peliculas.show', $movie->id) }}">
                                             <i class="fa-regular fa-eye"></i>
                                             Ver</a>
                                     </li>
