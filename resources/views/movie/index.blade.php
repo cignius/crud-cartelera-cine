@@ -12,6 +12,7 @@
         <table class="table table-hover">
             <thead>
                 <tr>
+                    <th scope="col" class="text-center">ID</th>
                     <th scope="col" class="text-center">Titulo</th>
                     <th scope="col" class="text-center">Estatus</th>
                     <th scope="col" class="text-center">Inicio exhibición</th>
@@ -24,6 +25,7 @@
             <tbody>
                 @foreach ($movies as $movie)
                     <tr>
+                        <td class="text-center">{{ $movie->id }}</td>
                         <td class="text-center">{{ $movie->title }}</td>
                         <td class="text-center">{{ $movie->status }}</td>
                         <td class="text-center">{{ $movie->start_exhibition }}</td>
