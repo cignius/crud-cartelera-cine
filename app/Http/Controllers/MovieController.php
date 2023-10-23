@@ -79,7 +79,8 @@ class MovieController extends Controller
             'image' => url("movies/{$movie->image}"),
             'start_exhibition' => $movie->start_exhibition,
             'finish_exhibition' => $movie->finish_exhibition,
-            'status' => $movie->status
+            'status' => $movie->status,
+            'token' => $movie->token
         ]);
     }
 
