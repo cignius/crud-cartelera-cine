@@ -54,6 +54,7 @@ $('#deleteModal').on('show.bs.modal',function (event) {
 //Hide modal
 $('#createModal, #showModal').on('hidden.bs.modal', function (e) {
     $('.form-register')[0].reset();
+    window.location.reload();
 });
 $('#deleteModal').on('hidden.bs.modal', function (e) {
     var modal = $(this);
@@ -120,16 +121,25 @@ $(document).on('submit', '.form-register', function (e) {
         }
 
     }).fail(function (jqXHR, textStatus, errorThrown) {
-        if (jqXHR.responseJSON) {
-            var errors = jqXHR.responseJSON;
-            errorsHtml =
+        var errors = jqXHR.responseJSON;
+        errorsHtml =
                 '<div class="invalid-feedback d-block normal-input"><ul class="px-3">';
+        if (jqXHR.responseJSON) {
+            
+            if(!errors.type)
+            {
+                $.each(errors.errors, function (key, value) {
+                    errorsHtml += '<li>' + value[0] +
+                        '</li>'; //showing only the first error.
+                });
+                errorsHtml += '</ul></div>';
+            }else{
+                errorsHtml += errors.message;
+                errorsHtml += '</div>';
+            }
+            
 
-            $.each(errors.errors, function (key, value) {
-                errorsHtml += '<li>' + value[0] +
-                    '</li>'; //showing only the first error.
-            });
-            errorsHtml += '</ul></div>';
+            
 
             $form.find('.details').html(
                 errorsHtml); //appending to a <div id="form-errors"></div> inside form  
