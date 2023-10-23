@@ -20,7 +20,7 @@ class MovieSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        foreach (range(1, 5) as $index) {
+        foreach (range(1, 30) as $index) {
             $movie = new Movie();
             $movie->title = $faker->sentence;
             $movie->director = $faker->name;

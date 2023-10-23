@@ -18,3 +18,8 @@ Route::resource('peliculas', MovieController::class)->parameters(['peliculas' =>
 Route::post('/', [LoginController::class, 'login']);
 Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::fallback(function () {
+    return abort(404, 'Not Found');
+});
+
